@@ -23,10 +23,10 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync "dist/" "s3://sudden.name" --acl public-read
+        run: aws s3 sync "dist/" "${{ secrets.AWS_S3_BUCKET }}" --acl public-read
 
       - name: Invalidate CloudFront distribution
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
